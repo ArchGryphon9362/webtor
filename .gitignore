@@ -3,3 +3,6 @@ node_modules/
 
 torrentList.json
 */torrentList.json
+
+.env
+*/.env
