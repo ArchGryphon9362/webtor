@@ -19,7 +19,7 @@ async function readChunk(file, start, end) {
 
 async function app() {
 
-	var torrentList = JSON.parse(fs.readFileSync('./torrentList.json'));
+	var torrentList = JSON.parse(fs.readFileSync('./config/torrentList.json'));
 
 	
 	http.createServer(function (req, res) {
@@ -43,7 +43,7 @@ async function app() {
 				res.writeHead(200, {'Content-Type': 'text/plain'});
 				res.write("Welp... You shouldn't be viewing this page 😅");
 				torrentList[decodeURIComponent(request.name)] = decodeURIComponent(request.torrent);
-				fs.writeFileSync('./torrentList.json', JSON.stringify(torrentList));
+				fs.writeFileSync('./config/torrentList.json', JSON.stringify(torrentList));
 				res.end();
 				break;
 			case '/getTorrentList':
@@ -55,7 +55,7 @@ async function app() {
 				res.writeHead(200, {'Content-Type': 'text/plain'});
 				res.write("Welp... You shouldn't be viewing this page 😅");
 				delete torrentList[decodeURIComponent(request.name)]
-				fs.writeFileSync('./torrentList.json', JSON.stringify(torrentList));
+				fs.writeFileSync('./config/torrentList.json', JSON.stringify(torrentList));
 				res.end();
 				break;
 			case '/listDir':
