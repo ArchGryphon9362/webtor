@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Torrent</title>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+  </head>
+  <body>
+	<br>
+	<br>
+	<br>
+	<br>
+	<a href="listDir?dir=%2Fhome%2Fteslamate%2FDownloads">Movies Directory</a>
+	<br>
+	<br>
+	<div id="videos">
+		<div id="player" class="webtor" />
+	</div>
+	<div>
+		<form method="get" id="torrentList">
+			<label for="name">Name: </label>
+			<input type="text" name="name" id="name">
+			<label for="torrent">Magnet/.torrent URL: </label>
+			<input type="text" name="torrent" id="torrent">
+		</form>
+		<button onclick="SubForm()">Add!</button>
+
+
+	</div>
+	<div id="tList">
+
+	</div>
+
+    <script>
+	    	//windor.webtor = window.webtor || [];
+		//window.webtor.push({
+		//	id: 'player',
+		//	baseUrl: 'hslamp.duckdns.org:31361',
+		//});
+		var torrentList;
+		
+		function SubForm (){
+			$.ajax({
+				url: '/torrentList',
+				type: 'get',
+				data: $('#torrentList').serialize(),
+				success: function(){
+					$('#tList')[0].innerHTML = ''
+					$.ajax({
+						url: 'getTorrentList',
+						type: 'get',
+						success: function(result) {
+							torrentList = JSON.parse(result);
+							
+							for(var k in torrentList) {
+								$('#tList')[0].innerHTML += "<p></p>"
+								$('#tList')[0].innerHTML += `<button onclick="playTorrent(innerHTML)">${k}</button>`
+								$('#tList')[0].innerHTML += `<button onclick="delTorrent('${k}')">X</button>`
+							}
+							$('#torrentList')[0].reset()
+						}
+					})
+				}
+			});
+		}
+		function delTorrent(name){
+			$.ajax({
+				url: '/delTorrent',
+				type: 'get',
+				data: `name=${encodeURIComponent(name)}`,
+				success: function(){
+					$('#tList')[0].innerHTML = ''
+					$.ajax({
+						url: 'getTorrentList',
+						type: 'get',
+						success: function(result) {
+							torrentList = JSON.parse(result);
+							
+							for(var k in torrentList) {
+								$('#tList')[0].innerHTML += "<p></p>"
+								$('#tList')[0].innerHTML += `<button onclick="playTorrent(innerHTML)">${k}</button>`
+								$('#tList')[0].innerHTML += `<button onclick="delTorrent('${k}')">X</button>`
+							}
+						}
+					})
+				}
+			});
+		}
+		
+		function playTorrent(name) {
+			torrentId = torrentList[name];
+			console.log(torrentId)
+			window.webtor.push({id: 'player', baseUrl: 'http://192.168.68.204:32477', magnet: torrentId})
+		}
+		$.ajax({
+			url: 'getTorrentList',
+			type: 'get',
+			success: function(result) {
+				torrentList = JSON.parse(result);
+				
+				for(var k in torrentList) {
+					$('#tList')[0].innerHTML += "<p></p>"
+					$('#tList')[0].innerHTML += `<button onclick="playTorrent(innerHTML)">${k}</button>`
+					$('#tList')[0].innerHTML += `<button onclick="delTorrent('${k}')">X</button>`
+				}
+			}
+		})
+
+		
+
+	</script>
+    <script src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js" charset="utf-8"></script>
+  </body>
+</html>

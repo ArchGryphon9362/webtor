@@ -1,0 +1,23 @@
+* {
+    color: #fff;
+}
+
+body, input, button {
+    background-color: #111;
+}
+
+a {
+    color: #99f;
+}
+
+.row {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 0fr);
+}
+
+#files {
+    padding: 1rem;
+    border: solid #666 2px;
+    border-radius: 1rem;
+}

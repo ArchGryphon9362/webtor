@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Oops</title>
+    <script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js"></script>
+	<script>
+		var url = window.location.href
+		var torrentId = url.split('?')
+
+		if(torrentId[1]){
+			if(torrentId[1].split('=')){
+				torrentId = decodeURIComponent(torrentId[1].split('=')[1]);
+				console.log(torrentId)
+			}
+		} else {
+			torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
+			//torrentId = 'magnet:?xt=urn:btih:d13585221f56d1708f9d03311bec9c690302613d&dn=rutor.info_%D0%A7%D0%B5%D0%B3%D0%BE+%D1%85%D0%BE%D1%87%D0%B5%D1%82+%D0%A1%D0%BB%D0%B0%D0%B2%D0%B0%3F+%282020%29+WEBRip+1080p&tr=udp%3A%2F%2Fopentor.org%3A2710&tr=udp%3A%2F%2Fopentor.org%3A2710&tr=http%3A%2F%2Fretracker.local%2Fannounce'
+		}
+		
+		var client = new WebTorrent()
+
+		// Sintel, a free, Creative Commons movie
+		
+		client.add(torrentId, function (torrent) {
+		// Torrents can contain many files. Let's use the .mp4 file
+		console.log(torrent)
+		var file = torrent.files.find(function (file) {
+			return file.name.endsWith('.mp4')
+		})
+
+		// Display the file by adding it to the DOM.
+		// Supports video, audio, image files, and more!
+		file.appendTo('body')
+		})
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

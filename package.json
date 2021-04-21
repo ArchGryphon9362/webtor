@@ -1,0 +1,17 @@
+{
+  "name": "webtorrent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "gridfs": "^1.0.0",
+    "gridfs-bucket": "^0.7.4",
+    "mime-types": "^2.1.28"
+  }
+}
