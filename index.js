@@ -32,7 +32,7 @@ async function app() {
 			trurl = req.url;
 		}
 		
-		switch (trurl) {
+		switch (trurl.slice(trurl.lastIndexOf('/'), trurl.length())) {
 			case '/':
 				var index = fs.readFileSync('./public/index.html');
 				res.writeHead(200, {'Content-Type': 'text/html'});
