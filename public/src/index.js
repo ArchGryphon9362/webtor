@@ -24,7 +24,7 @@ async function run(magnetUri) {
     status.innerHTML = '';
 
     const sdk = webtor({
-        apiUrl: /*'http://192.168.68.204:32477'*/ window.webtorIP, // you should change this
+        apiUrl: /*'http://192.168.68.204:32477'*/ window.WEBTOR_IP, // you should change this
     });
 
     let torrent = parseTorrent(magnetUri);

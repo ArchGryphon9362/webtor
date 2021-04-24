@@ -31,8 +31,10 @@ async function app() {
 		} else {
 			trurl = req.url;
 		}
+
+        console.log('/' + trurl.slice(trurl.lastIndexOf('/')+1, trurl.length))
 		
-		switch (trurl.slice(trurl.lastIndexOf('/'), trurl.length)) {
+		switch ('/' + trurl.slice(trurl.lastIndexOf('/')+1, trurl.length)) {
 			case '/':
 				var index = fs.readFileSync('./public/index.html');
 				res.writeHead(200, {'Content-Type': 'text/html'});
@@ -176,15 +178,17 @@ async function app() {
 			default:
 				try {
 					var html = fs.readFileSync(`./public/${trurl.slice(1, trurl.length)}`);
+                    res.writeHead(200);
+                    res.write(html);
+                    res.end();
 				}
 				catch(err) {
-					res.writeHead(404, {'Content-Type': 'text/plain'});
-					res.write('404: Not Found');
+                    var index = fs.readFileSync('./public/index.html');
+                    res.writeHead(200, {'Content-Type': 'text/html'});
+                    res.write(index);
+                    res.end();
 					break;
 				}
-				res.writeHead(200);
-				res.write(html);
-				res.end();
 				break;
 		}
 	}).listen(8800);
