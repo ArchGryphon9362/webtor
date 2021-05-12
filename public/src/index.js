@@ -4,7 +4,7 @@ import videojs from 'video.js';
 // import hls from 'videojs-contrib-hls';
 const parseTorrent = require('parse-torrent');
 
-async function main() {
+window.wtscript = async function() {
     const links = document.querySelectorAll('a[data-magnet]');
     for (const l of links) {
         l.addEventListener('click', function (e) {
@@ -24,7 +24,7 @@ async function run(magnetUri) {
     status.innerHTML = '';
 
     const sdk = webtor({
-        apiUrl: /*'http://192.168.68.204:32477'*/ window.WEBTOR_IP, // you should change this
+        apiUrl: /*'http://192.168.68.204:32477'*/ window.webtorIP, // you should change this
     });
 
     let torrent = parseTorrent(magnetUri);
@@ -114,5 +114,3 @@ async function play(fPath, seeder) {
     });
 
 }
-
-main();

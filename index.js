@@ -172,6 +172,7 @@ async function app() {
                 };
 
                 res.writeHead(200, {'Content-Type': 'application/json'});
+                console.log(JSON.stringify(tmpObj));
                 res.write(JSON.stringify(tmpObj));
                 res.end();
                 break;

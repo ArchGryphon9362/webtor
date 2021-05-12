@@ -3,6 +3,7 @@
 //	id: 'player',
 //	baseUrl: 'hslamp.duckdns.org:31361',
 //});
+
 var torrentList;
 
 $.ajax({
@@ -32,6 +33,8 @@ function SubForm (){
                         $('#tList')[0].innerHTML += `<button onclick="delTorrent('${k}')">X</button>`
                     }
                     $('#torrentList')[0].reset()
+
+                    window.wtscript();
                 }
             })
         }
@@ -77,6 +80,8 @@ $.ajax({
             $('#tList')[0].innerHTML += `<a href="#" data-magnet=${torrentList[k]}>${k}</a>`
             $('#tList')[0].innerHTML += `<button onclick="delTorrent('${k}')">X</button>`
         }
+
+        window.wtscript();
     }
 })
 
