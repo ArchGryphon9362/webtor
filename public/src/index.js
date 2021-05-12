@@ -108,8 +108,8 @@ async function play(fPath, seeder) {
     // NOTE: stats will become available only after content url access
     seeder.stats(fPath, (path, data) => {
         console.log(data);
-        status.innerHTML = 'total: ' + data.total;
-        status.innerHTML += ' completed: ' + data.completed;
+        status.innerHTML = 'total: ' + (data.total / 1048576).toPrecision(3);
+        status.innerHTML += ' completed: ' + (data.completed / 1048576).toPrecision(3);
         status.innerHTML += ' peers: ' + data.peers;
     });
 
