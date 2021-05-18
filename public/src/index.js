@@ -3,9 +3,17 @@ import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
 // import hls from 'videojs-contrib-hls';
 const parseTorrent = require('parse-torrent');
+var v;
+
+var lastSave = -1;
+
+function timeout(ms) {
+    new Promise(resolve => setTimeout(resolve, ms));
+}
 
 window.wtscript = async function() {
     const links = document.querySelectorAll('a[data-magnet]');
+    
     for (const l of links) {
         l.addEventListener('click', function (e) {
             const m = e.target.getAttribute('data-magnet');
@@ -14,6 +22,41 @@ window.wtscript = async function() {
             return false;
         });
     }
+
+    init();
+}
+
+async function init() {
+    v = videojs("webtor");
+    
+    console.log('he');
+
+    await timeout(5000);
+
+    let test = document.getElementById("webtor").addEventListener("timeupdate", (t) => {
+        console.log('attempting to...');
+        if ((t.target.currentTime - (t.target.currentTime % 1)) % 2) {
+            if (lastSave != (t.target.currentTime - (t.target.currentTime % 1))) {
+                lastSave = (t.target.currentTime - (t.target.currentTime % 1));
+    
+                console.log('***trying to save time***');
+    
+                $.ajax({
+                    url: '/saveTime',
+                    type: 'post',
+                    data: {
+                        name: document.querySelector('#download').innerText,
+                        time: t.target.currentTime
+                    },
+                    success: function(a) {
+                        console.log('saved time!');
+                    }
+                });
+            }
+        }
+    })
+    console.log(test);
+    console.log('ha');
 }
 
 async function run(magnetUri) {
@@ -56,6 +99,8 @@ async function run(magnetUri) {
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     });
 
+    console.log(filesAlpha);
+
     for (const f of filesAlpha) {
         if (sdk.util.getMediaType(f.path) == 'video') {
             filePath = f.path;
@@ -97,7 +142,6 @@ async function play(fPath, seeder) {
     const url = await seeder.streamUrl(fPath);
     const status = document.querySelector('#status');
 
-    const v = videojs("webtor");
     v.src({
         src: url.toString(),
     });
@@ -108,8 +152,8 @@ async function play(fPath, seeder) {
     // NOTE: stats will become available only after content url access
     seeder.stats(fPath, (path, data) => {
         console.log(data);
-        status.innerHTML = 'total: ' + (data.total / 1048576).toPrecision(3);
-        status.innerHTML += ' completed: ' + (data.completed / 1048576).toPrecision(3);
+        status.innerHTML = 'total: ' + (data.total >= 1073741824) ? ((data.total / 1073741824).toFixed(0) + 'GB') : ((data.total / 1048576).toFixed(0) + 'MB');
+        status.innerHTML += ' completed: ' + (data.completed >= 1073741824) ? ((data.completed / 1073741824).toFixed(0) + 'GB') : ((data.completed / 1048576).toFixed(0) + 'MB');
         status.innerHTML += ' peers: ' + data.peers;
     });
 
